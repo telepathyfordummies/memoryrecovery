@@ -119,12 +119,11 @@ document.getElementById("machine").addEventListener("click", async () => {
       );
 
       const minutes = Math.floor(
-        (remaining % (1000 * 60 * 60))
-        / (1000 * 60)
+        (remaining % (1000 * 60 * 60)) / (1000 * 60)
       );
 
       showScroll(
-        `You must wait ${hours}h ${minutes}m before using FutureVision again.`
+        `You must wait ${hours}h ${minutes}m to recover more memories.`
       );
 
       return;
@@ -145,10 +144,11 @@ document.getElementById("machine").addEventListener("click", async () => {
 });
 
 function showScroll(text) {
+
   const popup = document.getElementById("scrollPopup");
   const t = document.getElementById("scrollText");
-  const sound = document.getElementById("scrollSound");
 
+  // Image support 
   if (
     typeof text === "string" &&
     (text.endsWith(".png") || text.endsWith(".jpg"))
@@ -157,9 +157,6 @@ function showScroll(text) {
   } else {
     t.textContent = text;
   }
-
-  sound.currentTime = 0;
-  sound.play();
 
   popup.style.display = "flex";
   popup.classList.add("closeable");

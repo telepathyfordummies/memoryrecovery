@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> </title>
+
+<style>
+body {
+  background:#1a1a1a;
+  color:#e9e2d0;
+  font-family: monospace;
+  text-align:center;
+  padding-top:40px;
+}
+
+/* --- MACHINE CONTAINER --- */
+.machine-container {
+  position: relative;
+  width: 600px;
+  margin: 0 auto;
+}
+
+/* --- MACHINE IMAGE BUTTON --- */
+#machine {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  transition: transform .1s;
+}
+#machine:active {
+  transform: scale(0.95);
+}
+
+/* --- POPUP SCROLL --- */
+#scrollPopup {
+  position: absolute;            
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+
+  width: 480px;
+  min-height: 250px;            
+  max-height: 80%;
+  padding: 40px 20px;
+
+  background: url("scroll3.png") no-repeat center center / cover;
+
+  display: none;                 
+  flex-direction: column;       
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  color: black;
+  font-size: 26px;
+  font-weight: bold;
+  text-shadow: 2px 2px 0 #c3b39a;
+
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Pop-in animation */
+#scrollPopup.pop-in {
+  animation: popIn 0.35s forwards;
+}
+
+@keyframes popIn {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* --- SCROLL TEXT --- */
+#scrollText {
+  width: 100%;
+  margin: 0;
+}
+
+/* Close cursor */
+#scrollPopup.closeable {
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h2> </h2>
+
+<!-- SOUND EFFECT -->
+<audio id="scrollSound" src="tick.mp3" preload="auto"></audio>
+
+<!-- MACHINE CONTAINER -->
+<div class="machine-container">
+  <img id="machine" src="machine3.png" alt="machine">
+
+  <!-- SCROLL POPUP -->
+  <div id="scrollPopup">
+    <div id="scrollText"></div>
+  </div>
+</div>
+
+<script>
+const WORKER_URL = "futurevision-api.telepathyfordummies.workers.dev";
+
+document.getElementById("machine").addEventListener("click", async () => {
+
+  try {
+
+    const response = await fetch(WORKER_URL);
+
+    const data = await response.json();
+
+    if (!data.allowed) {
+
+      const remaining = data.remaining;
+
+      const hours = Math.floor(
+        remaining / (1000 * 60 * 60)
+      );
+
+      const minutes = Math.floor(
+        (remaining % (1000 * 60 * 60))
+        / (1000 * 60)
+      );
+
+      showScroll(
+        `You must wait ${hours}h ${minutes}m before using FutureVision again.`
+      );
+
+      return;
+    }
+
+    showScroll(data.spoiler);
+
+  } catch (err) {
+
+    console.error(err);
+
+    showScroll(
+      "FutureVision is currently unreachable."
+    );
+
+  }
+
+});
+
+function showScroll(text) {
+  const popup = document.getElementById("scrollPopup");
+  const t = document.getElementById("scrollText");
+  const sound = document.getElementById("scrollSound");
+
+  if (
+    typeof text === "string" &&
+    (text.endsWith(".png") || text.endsWith(".jpg"))
+  ) {
+    t.innerHTML = `<img src="${text}" style="max-width:200px;">`;
+  } else {
+    t.textContent = text;
+  }
+
+  sound.currentTime = 0;
+  sound.play();
+
+  popup.style.display = "flex";
+  popup.classList.add("closeable");
+
+  popup.classList.remove("pop-in");
+  void popup.offsetWidth;
+  popup.classList.add("pop-in");
+}
+
+document.getElementById("scrollPopup").addEventListener("click", () => {
+  document.getElementById("scrollPopup").style.display = "none";
+});
+</script>
+
+</body>
+</html>

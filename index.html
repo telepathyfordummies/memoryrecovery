@@ -82,6 +82,48 @@ body {
 #scrollPopup.closeable {
   cursor: pointer;
 }
+
+/* Fine Print Button */
+#finePrintBtn {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background: transparent;
+  border: 1px solid #666;
+  color: #666;
+  font-family: monospace;
+  font-size: 10px;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+/* Fine Print Popup */
+#finePrintPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  max-width: 90%;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  background: #f5f1e8;
+  color: #111;
+  border: 2px solid #444;
+  padding: 20px;
+
+  display: none;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.4;
+  z-index: 1000;
+}
+
+#finePrintPopup.show {
+  display: block;
+}
+  
 </style>
 </head>
 <body>
@@ -169,7 +211,72 @@ function showScroll(text) {
 document.getElementById("scrollPopup").addEventListener("click", () => {
   document.getElementById("scrollPopup").style.display = "none";
 });
+
+  document.getElementById("finePrintBtn").addEventListener("click", () => {
+  document.getElementById("finePrintPopup").classList.add("show");
+});
+
+document.getElementById("closeFinePrint").addEventListener("click", () => {
+  document.getElementById("finePrintPopup").classList.remove("show");
+});
+  
 </script>
 
+<button id="finePrintBtn">fine print</button>
+
+<div id="finePrintPopup">
+  <h3>NOTICE TO PARTICIPANTS</h3>
+
+  <p>
+    The Memory Recovery Apparatus does not generate, fabricate, alter, implant, restore, reconstruct, verify, certify, or otherwise provide memories. Any resemblance between apparatus output and existing events, experiences, conclusions, suspicions, realizations, fears, observations, assumptions, or facts is entirely the responsibility of the participant.
+
+  </p>
+
+  <p>
+    By operating the device, participants acknowledge that all responses are generated from available information. The Apparatus cannot reveal what does not already exist. Apparent discoveries should not be interpreted as discoveries.
+
+  </p>
+
+  <p>
+ Questions produced by the Apparatus may not possess meaningful answers at the time of generation. Users are advised to retain all outputs until such time as the answer becomes obvious, unavoidable, or impossible to ignore.
+  </p>
+
+  <p>
+The Recovery Process may result in delayed recognition events. Delayed recognition events are characterized by the sudden understanding that a question was important only after the answer has been encountered.
+  </p>
+
+  <p>
+Participants should not attempt to force answers. Answers obtained through coercion, speculation, fabrication, guesswork, divination, statistical inference, coincidence, or excessive optimism may differ from the correct answer.
+  </p>
+
+  <p>
+    The Apparatus is calibrated to identify unresolved informational structures. These structures are commonly, though inaccurately, referred to as "missing memories."
+  </p>
+  
+  <p>
+    <strong>WARNINGS:</strong> Apparatus output may concern future observations. This does not constitute prediction. Questions regarding future events are generated only when sufficient information already exists.
+  </p>
+  
+  <p>
+    Questions cannot be withdrawn once issued. Answers may arrive in any order.
+  </p>
+  
+  <p>
+    Users reporting that the Apparatus "already knew" something are reminded that the Apparatus does not know anything.
+  </p>
+  
+  <p>
+    Additional questions are not necessarily additional information. 
+  </p>
+  
+  <p>
+    <strong>IF A QUESTION CAUSES DISTRESS, DISCONTINUE IMMEDIATELY. </strong>
+  </p>
+
+  <p style="text-align:center;">
+    <button id="closeFinePrint">close</button>
+  </p>
+</div>
+  
 </body>
 </html>
